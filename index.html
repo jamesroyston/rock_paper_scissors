@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Rock Paper Scissors Game</title>
+</head>
+<body>
+  <script>
+  
+  const computerPlay = () => {
+    // random returns rock, paper, or scissors
+    const choice = ['rock', 'paper', 'scissors'];
+
+    let n = Math.floor(Math.random() * choice.length);
+    console.log('Computer chose: ' + choice[n]);
+    return choice[n];
+  }
+  
+  const play = (playerSelection, computerSelection) => {
+
+    // logic for game, ie what beats what
+    // if player picks rock, we need to compare rock to computerplay
+    // after player and computer picks are saved, compare against rules
+    let playerSel, computerSel;
+    playerSel = playerSelection;
+    computerSel = computerSelection;
+
+    if (playerSel == computerSel) {
+      return playerSel + ' and ' + computerSel + ' are the same, no winner';
+    } else if (playerSel == 'rock') {
+        if (computerSel == 'paper') {
+          return 'You lose, paper beats rock';
+        } else if (computerSel == 'scissors') {
+          return 'You win, rock beats scissors';
+        }
+      }
+
+      else if (playerSel == 'scissors') {
+        if (computerSel == 'paper') {
+          return 'You win, scissors beats paper';
+        } else if (computerSel = 'rock') {
+          return 'You lose, rock beats scissors';
+        }
+      }
+      
+      else if (playerSel == 'paper') {
+        if (computerSel == 'rock') {
+          return 'You win, paper beats rock';
+        } else if (computerSel == 'scissors') {
+          return 'You lose, scissors beats paper';
+        }
+      }
+    }
+  
+  
+  </script>
+</body>
+</html>
