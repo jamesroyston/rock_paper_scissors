@@ -12,11 +12,13 @@
     const game = function () {
 
         let gameData = {
+
           playerScore: 0,
           computerScore: 0,
-          gameCnt: 0,
+          gameCnt: 1,
           maxRounds: 5,
         }
+
         
         
         const computerPlay = () => {
@@ -70,12 +72,12 @@
             }
           gameData.gameCnt++
 
-          console.log(`playerScore: ${gameData.playerScore}`)
-          console.log(`computerScore: ${gameData.computerScore}`)
+          console.log(`Your score: ${gameData.playerScore}`)
+          console.log(`Computer's score: ${gameData.computerScore}`)
           console.log('----------')
           console.log('')
 
-          if (gameData.gameCnt < gameData.maxRounds) {
+          if (gameData.gameCnt <= gameData.maxRounds) {
             playRound();
           } else {
             if (gameData.playerScore > gameData.computerScore) {
