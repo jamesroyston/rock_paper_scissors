@@ -7,54 +7,94 @@
   <title>Rock Paper Scissors Game</title>
 </head>
 <body>
+  <h1>Refresh the page to play again :)</h1>
   <script>
-  
-  const computerPlay = () => {
-    // random returns rock, paper, or scissors
-    const choice = ['rock', 'paper', 'scissors'];
+    const game = function () {
 
-    let n = Math.floor(Math.random() * choice.length);
-    console.log('Computer chose: ' + choice[n]);
-    return choice[n];
-  }
-  
-  const play = (playerSelection, computerSelection) => {
-
-    // logic for game, ie what beats what
-    // if player picks rock, we need to compare rock to computerplay
-    // after player and computer picks are saved, compare against rules
-    let playerSel, computerSel;
-    playerSel = playerSelection;
-    computerSel = computerSelection;
-
-    if (playerSel == computerSel) {
-      return playerSel + ' and ' + computerSel + ' are the same, no winner';
-    } else if (playerSel == 'rock') {
-        if (computerSel == 'paper') {
-          return 'You lose, paper beats rock';
-        } else if (computerSel == 'scissors') {
-          return 'You win, rock beats scissors';
+        let gameData = {
+          playerScore: 0,
+          computerScore: 0,
+          gameCnt: 0,
+          maxRounds: 5,
         }
+        
+        
+        const computerPlay = () => {
+          // random returns rock, paper, or scissors
+          const choice = ['rock', 'paper', 'scissors'];
+
+          let n = Math.floor(Math.random() * choice.length);
+          return choice[n];
+        }
+        
+        const playRound = (playerSelection, computerSelection) => {
+          
+          // getCounts();
+          playerSelection = getInput();
+          computerSelection = computerPlay();
+
+          console.log('')
+          console.log('----------')
+          console.log(`Round ${gameData.gameCnt}`)
+          if (playerSelection == computerSelection) {
+            console.log(playerSelection + ' and ' + computerSelection + 
+              ' are the same, no winner')
+          } else if (playerSelection == 'rock') {
+              if (computerSelection == 'paper') {
+                gameData.computerScore++
+                console.log('You lose, paper beats rock')
+              } else if (computerSelection == 'scissors') {
+                gameData.playerScore++
+                console.log('You win, rock beats scissors')
+              }
+            }
+
+            else if (playerSelection == 'scissors') {
+              if (computerSelection == 'paper') {
+                gameData.playerScore++
+                console.log('You win, scissors beats paper')
+              } else if (computerSelection = 'rock') {
+                gameData.computerScore++
+                console.log('You lose, rock beats scissors')
+              }
+            }
+            
+            else if (playerSelection == 'paper') {
+              if (computerSelection == 'rock') {
+                gameData.playerScore++
+                console.log('You win, paper beats rock')
+              } else if (computerSelection == 'scissors') {
+                gameData.computerScore++
+                console.log('You lose, scissors beats paper')
+              }
+            }
+          gameData.gameCnt++
+
+          console.log(`playerScore: ${gameData.playerScore}`)
+          console.log(`computerScore: ${gameData.computerScore}`)
+          console.log('----------')
+          console.log('')
+
+          if (gameData.gameCnt < gameData.maxRounds) {
+            playRound();
+          } else {
+            if (gameData.playerScore > gameData.computerScore) {
+              console.log(`Player wins with a score of ${gameData.playerScore}`)
+            } else if (gameData.playerScore < gameData.computerScore) {
+              console.log(`Computer wins with a score of ${gameData.computerScore}`)
+            }
+          }
+        }
+
+        const getInput = () => {
+          let userInput = prompt('rock, paper, or scissors?').toLowerCase();
+          return userInput;
+        }
+        console.log(playRound())
       }
 
-      else if (playerSel == 'scissors') {
-        if (computerSel == 'paper') {
-          return 'You win, scissors beats paper';
-        } else if (computerSel = 'rock') {
-          return 'You lose, rock beats scissors';
-        }
-      }
-      
-      else if (playerSel == 'paper') {
-        if (computerSel == 'rock') {
-          return 'You win, paper beats rock';
-        } else if (computerSel == 'scissors') {
-          return 'You lose, scissors beats paper';
-        }
-      }
-    }
-  
-  
+    window.onload = console.log(game())
+
   </script>
 </body>
 </html>
