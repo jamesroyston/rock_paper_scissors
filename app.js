@@ -20,7 +20,7 @@ const model = ( () => {
   }
 
   const scoreCheck = () => {
-        // determine the winner logic
+    // determine the winner logic
 
     // pseudocode
     // if playerscore || computerscore === maxscore
@@ -28,14 +28,17 @@ const model = ( () => {
     // else comp is winner
 
     if (gameData.playerScore === gameData.maxScore ||
-      gameData.computerScore === gameData.maxScore) {
+          gameData.computerScore === gameData.maxScore) {
         gameData.haveWinner = true
         if (gameData.playerScore < gameData.computerScore) {
-          console.warn( '%cComputer is the winner!', 'color: red; font-size: 24px;') // 
+          console.warn( '%cComputer is the winner!',
+              'color: red; font-size: 24px;') // 
+          controller.displayWinner()
           controller.removeListeners()
           return
         } else {
           console.warn('%cHuman is the winner!', 'color: red; font-size: 24px;')
+          controller.displayWinner()
           controller.removeListeners()
           return
         }
@@ -139,6 +142,7 @@ const view = ( () => {
   
   // home of our views/UI
   const DOMstrings = {
+    scoreboard: document.querySelector('#scoreboard'),
     rock: document.querySelector('#rock'),
     paper: document.querySelector('#paper'),
     scissors: document.querySelector('#scissors'),
@@ -159,7 +163,17 @@ const controller = ( (modelCtrl, viewCtrl) => {
   // home of the interactions between the view/controller
   return {
 
-    
+    displayWinner: () => {
+      if (modelCtrl.gameData.playerScore === 5) {
+        viewCtrl.DOMstrings.scoreboard.innerHTML +=
+            '<br /><span style="font-size: 28px;">Human Wins!</span>'
+        viewCtrl.DOMstrings.scoreboard.style.backgroundColor = 'red'
+      } else if (modelCtrl.gameData.computerScore === 5) {
+        viewCtrl.DOMstrings.scoreboard.innerHTML +=
+            '<br /><span style="font-size: 28px;">Computer Wins!</span>'
+        viewCtrl.DOMstrings.scoreboard.style.backgroundColor = 'red'
+      }
+    },
 
     setupListeners: () => {
       viewCtrl.DOMstrings.rock.addEventListener('click', modelCtrl.rock)
