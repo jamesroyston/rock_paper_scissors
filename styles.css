@@ -14,6 +14,8 @@ button {
 #scoreboard {
   background-color: black;
   color: white;
-  width: 100px;
-  height: 100px;
+  width: 400px;
+  height: 200px;
+  font-size: 20px;
+  font-family: 'Courier New', Courier, monospace;
 }

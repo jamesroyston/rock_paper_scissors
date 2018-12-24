@@ -7,165 +7,180 @@
    *
  *
 ******************************/
+const model = ( () => {
 
-const init = (function () {
+  // home of our data
 
-
-  const initialize = () => {
-    view.renderButtons();
-    view.renderScoreboard();
+  const gameData =  {
+    playerScore: 0,
+    computerScore: 0,
+    userInput: '',
+    maxScore: 5,
+    haveWinner: false,
   }
 
-  const model = {
+  const scoreCheck = () => {
+        // determine the winner logic
 
-    // home of our data
+    // pseudocode
+    // if playerscore || computerscore === maxscore
+    // if playerscore < comp then comp is winner
+    // else comp is winner
 
-    gameData: {
-      playerScore: 0,
-      computerScore: 0,
-      gameCnt: 1,
-      maxRounds: 5,
-      userInput: '',
-    },
-
-    computerPlay: function () {
-      // random returns rock, paper, or scissors
-      const choice = ['rock', 'paper', 'scissors'];
-
-      let n = Math.floor(Math.random() * choice.length);
-      return choice[n];
-    },
-
-    playRound: function (playerSelection, computerSelection) {
-    
-      // getCounts();
-      playerSelection = this.gameData.userInput;
-      computerSelection = this.computerPlay();
-
-      console.log('')
-      console.log('----------')
-      console.log(`Round ${this.gameData.gameCnt}`)
-      if (playerSelection == computerSelection) {
-        console.log(playerSelection + ' and ' + computerSelection + 
-          ' are the same, no winner')
-      } else if (playerSelection == 'rock') {
-          if (computerSelection == 'paper') {
-            this.gameData.computerScore++
-            console.log('You lose, paper beats rock')
-          } else if (computerSelection == 'scissors') {
-            this.gameData.playerScore++
-            console.log('You win, rock beats scissors')
-          }
+    if (gameData.playerScore === gameData.maxScore ||
+      gameData.computerScore === gameData.maxScore) {
+        gameData.haveWinner = true
+        if (gameData.playerScore < gameData.computerScore) {
+          console.warn( 'Computer is the winner!') // 
+          controller.removeListeners()
+          return
+        } else {
+          console.warn('Human is the winner!')
+          controller.removeListeners()
+          return
         }
+    } else {
+      console.log("No winner! Keep Playing!")
+    }
+  }
+
+  const computerPlay = () => {
+    // random returns rock, paper, or scissors
+    const choice = ['rock', 'paper', 'scissors'];
+
+    let n = Math.floor(Math.random() * choice.length);
+    return choice[n];
+  }
   
-        else if (playerSelection == 'scissors') {
-          if (computerSelection == 'paper') {
-            this.gameData.playerScore++
-            console.log('You win, scissors beats paper')
-          } else if (computerSelection == 'rock') {
-            this.gameData.computerScore++
-            console.log('You lose, rock beats scissors')
-          }
-        }
-        
-        else if (playerSelection == 'paper') {
-          if (computerSelection == 'rock') {
-            this.gameData.playerScore++
-            console.log('You win, paper beats rock')
-          } else if (computerSelection == 'scissors') {
-            this.gameData.computerScore++
-            console.log('You lose, scissors beats paper')
-          }
-        }
-      this.gameData.gameCnt++
-  
-      
-      console.log(`Your score: ${this.gameData.playerScore}`)
-      console.log(`Computer's score: ${this.gameData.computerScore}`)
-      console.log('----------')
-      console.log('')
-  
-      if (this.gameData.gameCnt <= this.gameData.maxRounds) {
-        console.log('awaiting user input')
-      } else {
-        if (this.gameData.playerScore > this.gameData.computerScore) {
-          console.log(`Player wins with a score of ${this.gameData.playerScore}`)
-        } else if (this.gameData.playerScore < this.gameData.computerScore) {
-          console.log(`Computer wins with a score of ${this.gameData.computerScore}`)
+  const playRound = (playerSelection, computerSelection) => {
+
+
+    playerSelection = gameData.userInput
+    computerSelection = computerPlay()
+
+    console.log('')
+    console.log('----------')
+    console.log(`Round ${gameData.gameCnt}`)
+
+    // game logic
+
+    if (playerSelection == computerSelection) {
+      console.log(playerSelection + ' and ' + computerSelection + 
+        ' are the same, no winner')
+    } else if (playerSelection == 'rock') {
+        if (computerSelection == 'paper') {
+          gameData.computerScore++
+          console.log('You lose, paper beats rock')
+        } else if (computerSelection == 'scissors') {
+          gameData.playerScore++
+          console.log('You win, rock beats scissors')
         }
       }
-    },
 
-
-  }
-  
-  
-  
-  const view = {
+      else if (playerSelection == 'scissors') {
+        if (computerSelection == 'paper') {
+          gameData.playerScore++
+          console.log('You win, scissors beats paper')
+        } else if (computerSelection == 'rock') {
+          gameData.computerScore++
+          console.log('You lose, rock beats scissors')
+        }
+      }
+      
+      else if (playerSelection == 'paper') {
+        if (computerSelection == 'rock') {
+          gameData.playerScore++
+          console.log('You win, paper beats rock')
+        } else if (computerSelection == 'scissors') {
+          gameData.computerScore++
+          console.log('You lose, scissors beats paper')
+        }
+      }
+    gameData.gameCnt++
     
-    // home of our views/UI
-    DOMstrings: {
-      app: document.querySelector('#app')
-    },
+    // update UI Scoreboard after round
+    view.DOMstrings.playerScore.innerHTML = gameData.playerScore
+    view.DOMstrings.computerScore.innerHTML = gameData.computerScore
+    
+    console.log(`Your score: ${gameData.playerScore}`)
+    console.log(`Computer's score: ${gameData.computerScore}`)
+    console.log('----------')
+    console.log('')
 
-    renderButtons: function () {
-      
-      // grab the injection point in the DOM
-      
-
-      // create Elements for buttons
-      const rock = document.createElement('button')
-      const paper = document.createElement('button')
-      const scissors = document.createElement('button')
-
-      rock.textContent = 'Rock'
-      paper.textContent = 'Paper'
-      scissors.textContent = 'Scissors'
-
-      const buttons = [rock, paper, scissors]
-      buttons.forEach(buttons => {
-        this.DOMstrings.app.appendChild(buttons)
-      })
-
-      rock.addEventListener('click', controller.chooseRock)
-      paper.addEventListener('click', controller.choosePaper)
-      scissors.addEventListener('click', controller.chooseScissors)
-
-    },
-
-    renderScoreboard: function () {
-      const scoreboard = document.createElement('div');
-      scoreboard.id = 'scoreboard'
-
-      this.DOMstrings.app.appendChild(scoreboard)
-
-      
+    scoreCheck();
+  }
+  
+  
+    const rock = () => {
+      gameData.userInput = 'rock'
+      playRound()
+    }
+    const paper = () => {
+      gameData.userInput = 'paper'
+      playRound()
+    }
+    const scissors = () => {
+      gameData.userInput = 'scissors'
+      playRound()
     }
 
+  return {
+    gameData,
+    playRound,
+    rock,
+    paper,
+    scissors,
   }
 
-  
-  
-  
-  const controller = {
-
-    // home of the interactions between the view/controller
-
-    chooseRock: function() {
-      model.gameData.userInput = 'rock';
-      model.playRound();
-    },
-    choosePaper: function() {
-      model.gameData.userInput = 'paper';
-      model.playRound();
-    },
-    chooseScissors: function() {
-      model.gameData.userInput = 'scissors';
-      model.playRound();
-    }
-  }
-
-  initialize();
 })();
 
-window.onload = console.log(init);
+
+const view = ( () => {
+  
+  // home of our views/UI
+  const DOMstrings = {
+    rock: document.querySelector('#rock'),
+    paper: document.querySelector('#paper'),
+    scissors: document.querySelector('#scissors'),
+    playerScore: document.querySelector('#playerScore'),
+    computerScore: document.querySelector('#computerScore'),
+  }
+
+  return {
+    DOMstrings,
+  }
+
+})();
+
+
+
+const controller = ( (modelCtrl, viewCtrl) => {
+
+  // home of the interactions between the view/controller
+  return {
+
+    
+
+    setupListeners: () => {
+      viewCtrl.DOMstrings.rock.addEventListener('click', modelCtrl.rock)
+      viewCtrl.DOMstrings.paper.addEventListener('click', modelCtrl.paper)
+      viewCtrl.DOMstrings.scissors.addEventListener('click', modelCtrl.scissors)
+    },
+
+    removeListeners: () => {
+      viewCtrl.DOMstrings.rock.removeEventListener('click', modelCtrl.rock)
+      viewCtrl.DOMstrings.paper.removeEventListener('click', modelCtrl.paper)
+      viewCtrl.DOMstrings.scissors.removeEventListener('click', modelCtrl.scissors)
+    },
+
+    init: () => {
+      controller.setupListeners()
+    }
+  }
+  
+})(model, view);
+
+
+
+
+window.onload = controller.init;
