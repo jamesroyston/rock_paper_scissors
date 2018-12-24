@@ -31,11 +31,11 @@ const model = ( () => {
       gameData.computerScore === gameData.maxScore) {
         gameData.haveWinner = true
         if (gameData.playerScore < gameData.computerScore) {
-          console.warn( 'Computer is the winner!') // 
+          console.warn( '%cComputer is the winner!', 'color: red; font-size: 24px;') // 
           controller.removeListeners()
           return
         } else {
-          console.warn('Human is the winner!')
+          console.warn('%cHuman is the winner!', 'color: red; font-size: 24px;')
           controller.removeListeners()
           return
         }
