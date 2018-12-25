@@ -2,7 +2,7 @@
    *
     Rock Paper Scissors
     Coded by: James Royston III
-    Completed:
+    Completed: 24 Dec 2018
     for The Odin Project
    *
  *
